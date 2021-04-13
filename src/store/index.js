@@ -23,7 +23,7 @@ export default new Vuex.Store({
     },
 
     addProductToCart(context,product){
-      if(product.inventory > 0){
+      if(context.getters.productIsInStock(product)){
         const cartItem = context.state.cart.find(item => item.id === product.id)
         if(!cartItem){
           context.commit('pushProductToCart',product.id)
@@ -76,6 +76,11 @@ export default new Vuex.Store({
         total += product.price * product.quantity
       })
       return total 
+    },
+    productIsInStock(){
+      return(product) => {
+        return product.inventory > 0
+      }
     }
   },
 
